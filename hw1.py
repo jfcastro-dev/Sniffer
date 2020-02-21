@@ -4,12 +4,9 @@ import time
 from scapy.layers.http import HTTPRequest
 from scapy.layers.tls import *
 import cryptography
-'''
-Default to wlp3s0 
-'''
+
 def requests(pkt):
     op=""
-    #Additional info for HTTP Requests, not TLS
     if pkt.haslayer(HTTPRequest):
         src=pkt.getlayer(IP).src + ":" +str(pkt.getlayer(TCP).sport)
         dst=pkt.getlayer(IP).dst+ ":" +str(pkt.getlayer(TCP).dport)
@@ -49,7 +46,7 @@ def tst(pkt):
     if (pkt.haslayer('TLS Extension - Server Name')):
         pkt.show()
 
-face="wlp3s0"
+face=False
 tbf=False
 prevdump=False
 x=0
@@ -60,7 +57,7 @@ while(x<len(sys.argv)):
     elif(sys.argv[x]=='-r'):
         prevdump=sys.argv[x+1]
         x+=1
-    elif(sys.argv[x] and x>2):
+    elif(sys.argv[x] and len(sys.argv)>1):
         tbf=sys.argv[x]
     x+=1
 load_layer("http")
@@ -70,7 +67,14 @@ if(prevdump):
     for p in packets:
         requests(p)
     sys.exit(0)
-if(not tbf):
-    sniff(iface=face,prn=requests)
-else:
-    sniff(filter=tbf,iface=face,prn=requests)
+try:
+    if(not tbf) and (not face):
+        sniff(prn=requests)
+    elif(face and (not tbf)):
+        sniff(iface=face,prn=requests)
+    elif(tbf and (not face)):
+        sniff(filter=tbf,prn=requests)
+    else:
+        sniff(filter=tbf,iface=face,prn=requests)
+except:
+    print("Exception: Please ensure Interface is valid & filter expression is valid. \n\n")

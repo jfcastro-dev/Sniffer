@@ -5,12 +5,13 @@ James Castro
 This HW assignment more or less follows the spec given by the document.
 A chunk of code is commented out - this is meant to capture credentials
 from a POST request. Because it is outside the scope of the HW and would
-"break the spec", it is commented out - but it is there if you'd like to take a look.
+"break the spec", it is commented out - but it is there if you'd like to take a look (Starting Line 19)
 
-The default interface is wlp3s0, but can of course be overridden by the -i flag.
-The -r flag works as intended as well. After opening, the program exits normally.
+The default interface is to listen on all, but can of course be overridden by the -i flag.
 
-If -i and -r are given, it should basically read the output and exit normally.
+The -r flag works as intended -that is, after opening, the program exits normally.
+
+If -i and -r are given (or an expression), it should basically read the pcap and exit normally.
 
 Multiple get requests loaded from a given website will output a series of HTTP prints.
 This is simply because that's how get requests work.
@@ -99,3 +100,4 @@ Fri Feb 21 11:33:59 2020 TLS v1.2 192.168.1.100:49254 ->  104.244.42.194:443 api
 
 
 Please note: This will not work as intended with scapy or cryptography.
+It will also not work without being run as root.
