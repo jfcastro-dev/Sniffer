@@ -45,6 +45,9 @@ def requests(pkt):
         host= str(pkt.getlayer('TLS Extension - Server Name').servernames[0])[14:].replace('\'',"")
         print(tim+ " " + op + " " + src +" ->  " +dst +" "+host)
 
+def tst(pkt):
+    if (pkt.haslayer('TLS Extension - Server Name')):
+        pkt.show()
 
 face="wlp3s0"
 tbf=False
