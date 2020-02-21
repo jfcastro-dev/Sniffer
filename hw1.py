@@ -35,9 +35,13 @@ def requests(pkt):
         dst=pkt.getlayer(IP).dst+ ":" +str(pkt.getlayer(TCP).dport)
         x=(pkt.getlayer(TCP).time)
         tim=str(time.asctime(time.localtime(x)))
-        op=pkt.getlayer('TLS Handshake - Client Hello').version
+        op=pkt.getlayer('TLS Extension - Supported Versions (for ClientHello)').versions
+        maxvers=769 #some weird edge cases don't return anything so we'll assume default to 1.0
+        for i in op:
+            if(i>maxvers):
+                maxvers=i
         #This is a bit of a hack - number returned is SSL Code. 769 = TLS 1.0,770=1.1, 771=1.2, etc
-        op=(float(op)-769.0)*0.1+1.0
+        op=(float(maxvers)-769.0)*0.1+1.0
         op="TLS v" + str(op)
         host= str(pkt.getlayer('TLS Extension - Server Name').servernames[0])[14:].replace('\'',"")
         print(tim+ " " + op + " " + src +" ->  " +dst +" "+host)
