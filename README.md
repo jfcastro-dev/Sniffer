@@ -1,4 +1,4 @@
-# CSE363 HW1 README - Sniffer
+# Sniffer HW ReadMe
 
 This HW assignment more or less follows the spec given by the document.
 A chunk of code is commented out - this is meant to capture credentials
